@@ -1,0 +1,27 @@
+## This is the ZSH config file for MacOS hosts, so put your Mac-related aliases and whatnot in here
+# Add brew sbin to path
+export PATH=${PATH}:/usr/local/sbin
+
+# Add a file comment from the command line
+function fcomment () {
+    osascript -e 'on run {f, c}' -e 'tell app "Finder" to set comment of (POSIX file f as alias) to c' -e end "${1}" "${2}" 2>/dev/null
+}
+
+# Fix DNS when it gets borked
+alias flushdns='sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder'
+
+# Local aliases for OS X
+
+# Check code-signing status of a file
+alias codesign-dv "codesign -dvvv"
+alias codesign-vv "codesign -verify -v"
+# Run iotop with sane arguments
+alias iotop="sudo /usr/bin/iotop 5 -t 20 2>/dev/null"
+# Activate QuickLook on a file
+alias quicklook="/usr/bin/qlmanage -p"
+# Calculate SHA sums
+alias sha1sum="/usr/bin/shasum"
+alias sha256sum="/usr/bin/shasum -a 256"
+# Open Sublime Text to edit a file
+alias subl="/Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl"
+

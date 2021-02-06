@@ -1,0 +1,55 @@
+## This is the Unix-specific ZSH configuration file, which will get sourced on Linux hosts
+#    (and also on BSD at the moment?)
+#
+# Can't remember where I found this, but it's handy
+extract () {
+    if [ -f $1 ] ; then
+        case $1 in
+            *.tar.bz2)        tar xjf $1        ;;
+            *.tar.gz)         tar xzf $1        ;;
+            *.bz2)            bunzip2 $1        ;;
+            *.rar)            unrar x $1        ;;
+            *.gz)             gunzip $1         ;;
+            *.tar)            tar xf $1         ;;
+            *.tbz2)           tar xjf $1        ;;
+            *.tgz)            tar xzf $1        ;;
+            *.zip)            unzip $1          ;;
+            *.Z)              uncompress $1     ;;
+            *)                echo "'$1' cannot be extracted via extract()" ;;
+        esac
+    else
+        echo "'$1' is not a valid file"
+    fi
+}
+
+# Find text in files under a directory tree
+function tfind () {
+        find . -type f -exec grep -li $1 \;
+}
+
+# Start a new script session with a date-tagged log file
+function newscript {
+        export SCRDATE=`date +%Y-%m-%d_%H%M%S`;
+        /usr/bin/script script-${SCRDATE};
+}
+
+# Wipe out your HTTP proxies if you've set them
+function proxyreset () {
+    export http_proxy=''
+    export HTTP_PROXY=''
+    export https_proxy=''
+    export HTTPS_PROXY=''
+}
+
+# Set proxies quickly if needed (just remember to set the proxy name here!)
+function proxyset () {
+    export http_proxy='http://my.proxy.com:8080'
+    export HTTP_PROXY='http://my.proxy.com:8080'
+    export https_proxy='http://my.proxy.com:8080'
+    export HTTPS_PROXY='http://my.proxy.com:8080'
+}
+
+# If we're SSHed in, extend session time to two hours
+if [ ${SSH_CLIENT} ] ; then
+    export TMOUT=7200
+fi
